@@ -140,8 +140,7 @@ label {
 .summary-grid p,
 .listing-meta,
 .agent-line,
-.empty-state p,
-.import-note p {
+.empty-state p {
   color: var(--muted);
 }
 
@@ -150,13 +149,9 @@ label {
 }
 
 .workspace {
-  display: grid;
-  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
-  gap: 20px;
-  align-items: start;
+  display: block;
 }
 
-.panel,
 .empty-state {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -164,13 +159,6 @@ label {
   box-shadow: var(--shadow);
 }
 
-.panel {
-  position: sticky;
-  top: 18px;
-  padding: 18px;
-}
-
-.panel h2,
 .section-heading h2 {
   font-size: 1.15rem;
   letter-spacing: 0;
@@ -180,26 +168,6 @@ label {
 .mini-form {
   display: grid;
   gap: 13px;
-}
-
-.stack {
-  margin-top: 16px;
-}
-
-.field-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.import-note {
-  border-top: 1px solid var(--line);
-  margin-top: 22px;
-  padding-top: 18px;
-}
-
-.import-note h2 {
-  margin-bottom: 8px;
 }
 
 .listings {
@@ -225,8 +193,9 @@ label {
 
 .listing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 18px;
+  align-items: start;
 }
 
 .listing-card {
@@ -253,13 +222,15 @@ label {
 }
 
 .listing-topline form {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto;
   gap: 8px;
   align-items: center;
+  min-width: min(100%, 260px);
 }
 
 .listing-topline select {
-  min-width: 150px;
+  min-width: 0;
 }
 
 .listing-topline button,
@@ -294,13 +265,8 @@ label {
 }
 
 @media (max-width: 920px) {
-  .hero,
-  .workspace {
+  .hero {
     grid-template-columns: 1fr;
-  }
-
-  .panel {
-    position: static;
   }
 
   .summary-grid {
@@ -315,7 +281,6 @@ label {
   }
 
   .summary-grid,
-  .field-row,
   .listing-grid {
     grid-template-columns: 1fr;
   }

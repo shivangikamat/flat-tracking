@@ -1,5 +1,4 @@
 import {
-  addListing,
   addViewing,
   updateListingNotes,
   updateListingStatus,
@@ -63,56 +62,6 @@ export default async function Home() {
       </section>
 
       <section className="workspace">
-        <aside className="panel">
-          <h2>Add a real listing</h2>
-          <form action={addListing} className="stack">
-            <label>
-              Listing URL
-              <input
-                name="sourceUrl"
-                type="url"
-                placeholder="https://..."
-                required
-              />
-            </label>
-            <label>
-              Title or address
-              <input name="title" placeholder="Leave blank if unknown" />
-            </label>
-            <div className="field-row">
-              <label>
-                Rent pcm
-                <input name="rentPcm" type="number" min="0" inputMode="numeric" />
-              </label>
-              <label>
-                Bedrooms
-                <input name="bedrooms" type="number" min="0" inputMode="numeric" />
-              </label>
-            </div>
-            <label>
-              Area
-              <input name="area" placeholder="Leith, Marchmont, Newington..." />
-            </label>
-            <label>
-              Source
-              <input name="source" placeholder="Auto-detected from URL if blank" />
-            </label>
-            <label>
-              Notes
-              <textarea name="notes" rows={4} placeholder="Deposit, move date, red flags..." />
-            </label>
-            <button type="submit">Save listing</button>
-          </form>
-
-          <div className="import-note">
-            <h2>Email importer</h2>
-            <p>
-              Ready for the Gmail connection. It will read only your filtered
-              property alert label once you provide OAuth credentials.
-            </p>
-          </div>
-        </aside>
-
         <section className="listings">
           <div className="section-heading">
             <div>
@@ -125,8 +74,8 @@ export default async function Home() {
             <div className="empty-state">
               <h3>No listings yet</h3>
               <p>
-                Add your first real listing URL, or send me a few exported alert
-                emails and I’ll build the parser against those samples.
+                Run the Gmail sync or import alert emails to populate this
+                dashboard with real listings.
               </p>
             </div>
           ) : (
