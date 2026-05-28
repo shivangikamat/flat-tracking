@@ -102,6 +102,10 @@ export default async function Home({ searchParams }: HomeProps) {
         <div>
           <p className="eyebrow">Edinburgh rental tracker</p>
           <h1>One place for flats, enquiries, and viewings.</h1>
+          <nav className="page-nav" aria-label="Main navigation">
+            <Link href="/">Listings</Link>
+            <Link href="/viewings">Scheduled viewings</Link>
+          </nav>
         </div>
         <div className="summary-grid" aria-label="Tracker summary">
           <div>

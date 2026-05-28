@@ -126,6 +126,32 @@ label {
   letter-spacing: 0;
 }
 
+.hero-compact h1 {
+  max-width: 640px;
+}
+
+.page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.page-nav a {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(255, 250, 253, 0.82);
+  color: var(--accent-strong);
+  font-weight: 800;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.page-nav a:hover {
+  border-color: var(--accent);
+  background: var(--panel);
+}
+
 .eyebrow {
   color: var(--rust);
   font-size: 0.78rem;
@@ -224,6 +250,29 @@ label {
   background: var(--panel);
   box-shadow: var(--shadow);
   padding: 16px;
+}
+
+.viewing-list {
+  display: grid;
+  gap: 16px;
+}
+
+.viewing-card {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.viewing-card h2 {
+  font-size: 1.2rem;
+}
+
+.viewing-card h3 {
+  font-size: 1.05rem;
 }
 
 .listing-topline {
