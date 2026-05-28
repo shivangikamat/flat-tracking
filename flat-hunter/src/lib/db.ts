@@ -26,6 +26,8 @@ export type Listing = {
   bedrooms: number | null;
   bathrooms: number | null;
   furnished: string | null;
+  agentName: string | null;
+  agentPhone: string | null;
   status: ListingStatus;
   notes: string | null;
   firstSeenAt: Date;
@@ -66,6 +68,9 @@ type Store = {
   emailImports: {
     id: string;
     gmailMessageId: string;
+    subject?: string | null;
+    sender?: string | null;
+    receivedAt?: string | null;
     status: string;
   }[];
 };
@@ -167,6 +172,8 @@ export function createListing(input: {
       bedrooms: input.bedrooms,
       bathrooms: null,
       furnished: null,
+      agentName: null,
+      agentPhone: null,
       status: "NEW",
       notes: input.notes,
       firstSeenAt: now,

@@ -161,6 +161,12 @@ export default async function Home() {
                         ? ` · ${listing.bedrooms} bed`
                         : ""}
                     </p>
+                    {listing.agentName ? (
+                      <p className="agent-line">
+                        {listing.agentName}
+                        {listing.agentPhone ? ` · ${listing.agentPhone}` : ""}
+                      </p>
+                    ) : null}
 
                     <a className="source-link" href={listing.sourceUrl} target="_blank">
                       Open original listing

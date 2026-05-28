@@ -139,9 +139,14 @@ label {
 
 .summary-grid p,
 .listing-meta,
+.agent-line,
 .empty-state p,
 .import-note p {
   color: var(--muted);
+}
+
+.agent-line {
+  font-size: 0.92rem;
 }
 
 .workspace {
