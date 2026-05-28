@@ -38,3 +38,25 @@ npm run import:eml -- "/path/to/property-alert.eml"
 ```
 
 You can pass several `.eml` files at once. The importer dedupes by email message ID and listing URL.
+
+## Sync Gmail Label
+
+Put your Google OAuth desktop credentials here:
+
+```txt
+secrets/google-oauth.json
+```
+
+Then run:
+
+```bash
+npm run sync:gmail
+```
+
+The first run prints a Google authorization URL. Open it, approve Gmail read-only access, and the sync will save a local token in `secrets/gmail-token.json`. Future runs refresh the token automatically.
+
+By default it reads the Gmail label named `Flat Alerts`. To use another label:
+
+```bash
+GMAIL_LABEL_NAME="Your Label" npm run sync:gmail
+```

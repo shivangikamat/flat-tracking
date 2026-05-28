@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "import:eml": "node scripts/import-eml.mjs",
+    "sync:gmail": "node scripts/sync-gmail.mjs",
     "lint": "eslint"
   },
   "dependencies": {

@@ -22,6 +22,7 @@
 
 # local app data
 /data
+/secrets
 
 # misc
 .DS_Store
