@@ -96,14 +96,14 @@ label {
 }
 
 .app-shell {
-  width: min(1280px, calc(100vw - 32px));
+  width: min(1680px, calc(100vw - 48px));
   margin: 0 auto;
   padding: 34px 0 56px;
 }
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1.2fr) minmax(420px, 0.8fr);
   gap: 24px;
   align-items: end;
   border: 1px solid rgba(215, 199, 238, 0.9);
@@ -278,7 +278,7 @@ label {
   border-radius: 32px;
   background: rgba(255, 255, 255, 0.58);
   box-shadow: 0 18px 40px rgba(91, 68, 133, 0.09);
-  padding: 20px;
+  padding: 22px 24px 26px;
 }
 
 .postcode-heading {
@@ -306,8 +306,8 @@ label {
 
 .listing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(min(560px, 100%), 1fr));
+  gap: 24px;
   align-items: start;
 }
 
@@ -320,7 +320,7 @@ label {
     linear-gradient(180deg, #ffffff, #fcfaff),
     var(--panel);
   box-shadow: var(--shadow);
-  padding: 20px;
+  padding: 24px;
   overflow: hidden;
 }
 
@@ -365,7 +365,7 @@ label {
 
 .listing-topline form {
   display: grid;
-  grid-template-columns: minmax(120px, 1fr) auto;
+  grid-template-columns: minmax(160px, 1fr) auto;
   gap: 8px;
   align-items: center;
   min-width: min(100%, 260px);
@@ -419,7 +419,7 @@ label {
 
 @media (max-width: 620px) {
   .app-shell {
-    width: min(100vw - 22px, 1360px);
+    width: min(100vw - 22px, 1680px);
     padding-top: 20px;
   }
 
