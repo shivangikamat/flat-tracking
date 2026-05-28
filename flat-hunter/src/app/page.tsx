@@ -77,6 +77,16 @@ function getPostcodeSortValue(listing: Listing) {
   return number ? Number.parseInt(number, 10) : Number.POSITIVE_INFINITY;
 }
 
+function getPostcodeGroupLabel(listing: Listing) {
+  return getListingPostcode(listing).district ?? "Postcode unknown";
+}
+
+function getPostcodeGroupSortValue(label: string) {
+  const number = label.match(/\d+/)?.[0];
+
+  return number ? Number.parseInt(number, 10) : Number.POSITIVE_INFINITY;
+}
+
 function distanceBetweenKm(
   first: { lat: number; lon: number },
   second: { lat: number; lon: number },
@@ -137,6 +147,14 @@ export default async function Home({ searchParams }: HomeProps) {
   const upcomingViewings = listings.filter((listing) =>
     listing.viewings.some((viewing) => viewing.startsAt >= new Date()),
   ).length;
+  const postcodeGroups = Map.groupBy(listings, getPostcodeGroupLabel)
+    .entries()
+    .toArray()
+    .toSorted(
+      ([firstLabel], [secondLabel]) =>
+        getPostcodeGroupSortValue(firstLabel) - getPostcodeGroupSortValue(secondLabel) ||
+        firstLabel.localeCompare(secondLabel),
+    );
 
   return (
     <main className="app-shell">
@@ -194,92 +212,108 @@ export default async function Home({ searchParams }: HomeProps) {
               </p>
             </div>
           ) : (
-            <div className="listing-grid">
-              {listings.map((listing) => {
-                const nextViewing = listing.viewings.find(
-                  (viewing) => viewing.startsAt >= new Date(),
-                );
-                const postcode = getListingPostcode(listing);
-                const appletonDistanceKm = estimateAppletonDistanceKm(listing);
+            <div className="postcode-groups">
+              {postcodeGroups.map(([label, groupListings]) => (
+                <section className="postcode-section" key={label}>
+                  <div className="postcode-heading">
+                    <h3>{label}</h3>
+                    <span>
+                      {groupListings.length}{" "}
+                      {groupListings.length === 1 ? "listing" : "listings"}
+                    </span>
+                  </div>
 
-                return (
-                  <article className="listing-card" key={listing.id}>
-                    <div className="listing-topline">
-                      <span>{listing.source ?? "Unknown source"}</span>
-                      <form action={updateListingStatus}>
-                        <input type="hidden" name="id" value={listing.id} />
-                        <select name="status" defaultValue={listing.status}>
-                          {Object.entries(statusLabels).map(([value, label]) => (
-                            <option key={value} value={value}>
-                              {label}
-                            </option>
-                          ))}
-                        </select>
-                        <button type="submit">Update</button>
-                      </form>
-                    </div>
+                  <div className="listing-grid">
+                    {groupListings.map((listing) => {
+                      const nextViewing = listing.viewings.find(
+                        (viewing) => viewing.startsAt >= new Date(),
+                      );
+                      const postcode = getListingPostcode(listing);
+                      const appletonDistanceKm = estimateAppletonDistanceKm(listing);
 
-                    <h3>{listing.title || "Untitled listing"}</h3>
-                    <p className="listing-meta">
-                      {formatRent(listing.rentPcm)}
-                      {listing.area ? ` · ${listing.area}` : ""}
-                      {listing.bedrooms !== null
-                        ? ` · ${listing.bedrooms} bed`
-                        : ""}
-                      {postcode.district ? ` · ${postcode.full ?? postcode.district}` : ""}
-                      {Number.isFinite(appletonDistanceKm)
-                        ? ` · ${appletonDistanceKm.toFixed(1)} km from Appleton Tower`
-                        : ""}
-                    </p>
-                    {listing.agentName ? (
-                      <p className="agent-line">
-                        {listing.agentName}
-                        {listing.agentPhone ? ` · ${listing.agentPhone}` : ""}
-                      </p>
-                    ) : null}
+                      return (
+                        <article className="listing-card" key={listing.id}>
+                          <div className="listing-topline">
+                            <span>{listing.source ?? "Unknown source"}</span>
+                            <form action={updateListingStatus}>
+                              <input type="hidden" name="id" value={listing.id} />
+                              <select name="status" defaultValue={listing.status}>
+                                {Object.entries(statusLabels).map(([value, statusLabel]) => (
+                                  <option key={value} value={value}>
+                                    {statusLabel}
+                                  </option>
+                                ))}
+                              </select>
+                              <button type="submit">Update</button>
+                            </form>
+                          </div>
 
-                    <a className="source-link" href={listing.sourceUrl} target="_blank">
-                      Open original listing
-                    </a>
+                          <h3>{listing.title || "Untitled listing"}</h3>
+                          <p className="listing-meta">
+                            {formatRent(listing.rentPcm)}
+                            {listing.area ? ` · ${listing.area}` : ""}
+                            {listing.bedrooms !== null
+                              ? ` · ${listing.bedrooms} bed`
+                              : ""}
+                            {postcode.district
+                              ? ` · ${postcode.full ?? postcode.district}`
+                              : ""}
+                            {Number.isFinite(appletonDistanceKm)
+                              ? ` · ${appletonDistanceKm.toFixed(1)} km from Appleton Tower`
+                              : ""}
+                          </p>
+                          {listing.agentName ? (
+                            <p className="agent-line">
+                              {listing.agentName}
+                              {listing.agentPhone ? ` · ${listing.agentPhone}` : ""}
+                            </p>
+                          ) : null}
 
-                    {nextViewing ? (
-                      <p className="viewing-pill">
-                        Next viewing: {formatDateTime(nextViewing.startsAt)}
-                      </p>
-                    ) : null}
+                          <a className="source-link" href={listing.sourceUrl} target="_blank">
+                            Open original listing
+                          </a>
 
-                    <form action={updateListingNotes} className="mini-form">
-                      <input type="hidden" name="id" value={listing.id} />
-                      <label>
-                        Notes
-                        <textarea
-                          name="notes"
-                          rows={3}
-                          defaultValue={listing.notes ?? ""}
-                        />
-                      </label>
-                      <button type="submit">Save notes</button>
-                    </form>
+                          {nextViewing ? (
+                            <p className="viewing-pill">
+                              Next viewing: {formatDateTime(nextViewing.startsAt)}
+                            </p>
+                          ) : null}
 
-                    <form action={addViewing} className="mini-form viewing-form">
-                      <input type="hidden" name="listingId" value={listing.id} />
-                      <label>
-                        Viewing time
-                        <input name="startsAt" type="datetime-local" required />
-                      </label>
-                      <label>
-                        Location
-                        <input name="location" placeholder="Address or meeting point" />
-                      </label>
-                      <label>
-                        Contact
-                        <input name="contactInfo" placeholder="Email or phone" />
-                      </label>
-                      <button type="submit">Add viewing</button>
-                    </form>
-                  </article>
-                );
-              })}
+                          <form action={updateListingNotes} className="mini-form">
+                            <input type="hidden" name="id" value={listing.id} />
+                            <label>
+                              Notes
+                              <textarea
+                                name="notes"
+                                rows={3}
+                                defaultValue={listing.notes ?? ""}
+                              />
+                            </label>
+                            <button type="submit">Save notes</button>
+                          </form>
+
+                          <form action={addViewing} className="mini-form viewing-form">
+                            <input type="hidden" name="listingId" value={listing.id} />
+                            <label>
+                              Viewing time
+                              <input name="startsAt" type="datetime-local" required />
+                            </label>
+                            <label>
+                              Location
+                              <input name="location" placeholder="Address or meeting point" />
+                            </label>
+                            <label>
+                              Contact
+                              <input name="contactInfo" placeholder="Email or phone" />
+                            </label>
+                            <button type="submit">Add viewing</button>
+                          </form>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
             </div>
           )}
         </section>

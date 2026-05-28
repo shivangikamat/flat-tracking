@@ -267,6 +267,42 @@ label {
   margin-bottom: 8px;
 }
 
+.postcode-groups {
+  display: grid;
+  gap: 30px;
+}
+
+.postcode-section {
+  border: 2px solid #f39ac4;
+  border-radius: 26px;
+  background: rgba(255, 250, 253, 0.64);
+  box-shadow: 0 12px 0 rgba(185, 30, 112, 0.08);
+  padding: 18px;
+}
+
+.postcode-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  border-bottom: 2px dashed #f3bfd9;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+}
+
+.postcode-heading h3 {
+  color: var(--accent-strong);
+  font-size: 1.5rem;
+}
+
+.postcode-heading span {
+  border-radius: 999px;
+  background: #ffe4f0;
+  color: var(--rust);
+  font-weight: 800;
+  padding: 8px 12px;
+}
+
 .listing-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
