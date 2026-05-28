@@ -306,8 +306,8 @@ label {
 
 .listing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(560px, 100%), 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(min(430px, 100%), 1fr));
+  gap: 22px;
   align-items: start;
 }
 
@@ -413,6 +413,12 @@ label {
   }
 
   .summary-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1400px) {
+  .listing-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
