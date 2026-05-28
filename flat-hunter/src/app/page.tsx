@@ -32,47 +32,81 @@ function formatDateTime(date: Date) {
   }).format(date);
 }
 
-const postcodeDistanceKm: Record<string, number> = {
-  EH1: 0.4,
-  EH2: 0.7,
-  EH3: 0.9,
-  EH7: 1.7,
-  EH8: 1.2,
-  EH9: 2.4,
-  EH10: 3.4,
-  EH11: 3.3,
-  EH12: 4.5,
-  EH13: 5.2,
-  EH14: 6.1,
-  EH15: 5.0,
-  EH16: 4.1,
-  EH17: 6.2,
+const appletonTower = {
+  lat: 55.9446,
+  lon: -3.1863,
 };
 
-const areaDistanceKm: Record<string, number> = {
-  leith: 3.0,
-  marchmont: 2.2,
-  morningside: 3.4,
-  newington: 2.0,
-  portobello: 6.0,
-  stockbridge: 1.8,
+const postcodeDistrictCoordinates: Record<string, { lat: number; lon: number }> = {
+  EH1: { lat: 55.9494, lon: -3.1901 },
+  EH2: { lat: 55.9525, lon: -3.2034 },
+  EH3: { lat: 55.9522, lon: -3.2119 },
+  EH4: { lat: 55.9604, lon: -3.2444 },
+  EH5: { lat: 55.9736, lon: -3.2187 },
+  EH6: { lat: 55.9707, lon: -3.1742 },
+  EH7: { lat: 55.9582, lon: -3.1678 },
+  EH8: { lat: 55.9446, lon: -3.1668 },
+  EH9: { lat: 55.9342, lon: -3.1855 },
+  EH10: { lat: 55.9227, lon: -3.2099 },
+  EH11: { lat: 55.9368, lon: -3.2292 },
+  EH12: { lat: 55.9428, lon: -3.2626 },
+  EH13: { lat: 55.9078, lon: -3.2336 },
+  EH14: { lat: 55.9135, lon: -3.2843 },
+  EH15: { lat: 55.9504, lon: -3.1126 },
+  EH16: { lat: 55.9225, lon: -3.1661 },
+  EH17: { lat: 55.9049, lon: -3.1598 },
 };
 
-function estimateDistanceKm(listing: ReturnType<typeof getListings>[number]) {
-  const haystack = `${listing.title ?? ""} ${listing.area ?? ""}`.toLowerCase();
-  const postcode = haystack.match(/\bEH\d{1,2}\b/i)?.[0]?.toUpperCase();
+type Listing = ReturnType<typeof getListings>[number];
 
-  if (postcode && postcode in postcodeDistanceKm) {
-    return postcodeDistanceKm[postcode];
+function getListingPostcode(listing: Listing) {
+  const haystack = `${listing.title ?? ""} ${listing.area ?? ""}`.toUpperCase();
+  const fullPostcode = haystack.match(/\bEH\d{1,2}\s?\d[A-Z]{2}\b/)?.[0];
+  const district = haystack.match(/\bEH\d{1,2}\b/)?.[0];
+
+  return {
+    full: fullPostcode ? fullPostcode.replace(/\s+/, " ") : null,
+    district: district ?? null,
+  };
+}
+
+function getPostcodeSortValue(listing: Listing) {
+  const district = getListingPostcode(listing).district;
+  const number = district?.match(/\d+/)?.[0];
+
+  return number ? Number.parseInt(number, 10) : Number.POSITIVE_INFINITY;
+}
+
+function distanceBetweenKm(
+  first: { lat: number; lon: number },
+  second: { lat: number; lon: number },
+) {
+  const earthRadiusKm = 6371;
+  const latDelta = ((second.lat - first.lat) * Math.PI) / 180;
+  const lonDelta = ((second.lon - first.lon) * Math.PI) / 180;
+  const firstLat = (first.lat * Math.PI) / 180;
+  const secondLat = (second.lat * Math.PI) / 180;
+  const haversine =
+    Math.sin(latDelta / 2) ** 2 +
+    Math.cos(firstLat) * Math.cos(secondLat) * Math.sin(lonDelta / 2) ** 2;
+
+  return earthRadiusKm * 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine));
+}
+
+function estimateAppletonDistanceKm(listing: Listing) {
+  const district = getListingPostcode(listing).district;
+
+  if (!district) {
+    return Number.POSITIVE_INFINITY;
   }
 
-  for (const [area, distance] of Object.entries(areaDistanceKm)) {
-    if (haystack.includes(area)) {
-      return distance;
-    }
+  const coordinate = postcodeDistrictCoordinates[district];
+
+  if (!coordinate) {
+    return Number.POSITIVE_INFINITY;
   }
 
-  return Number.POSITIVE_INFINITY;
+  return distanceBetweenKm(appletonTower, coordinate);
 }
 
 type HomeProps = {
@@ -83,13 +117,21 @@ type HomeProps = {
 
 export default async function Home({ searchParams }: HomeProps) {
   const resolvedSearchParams = await searchParams;
-  const sortByDistance = resolvedSearchParams?.sort === "distance";
+  const sort = resolvedSearchParams?.sort;
   const listings = getListings().toSorted((first, second) => {
-    if (!sortByDistance) {
-      return 0;
+    if (sort === "distance") {
+      return estimateAppletonDistanceKm(first) - estimateAppletonDistanceKm(second);
     }
 
-    return estimateDistanceKm(first) - estimateDistanceKm(second);
+    if (sort === "postcode") {
+      return (
+        getPostcodeSortValue(first) - getPostcodeSortValue(second) ||
+        first.title?.localeCompare(second.title ?? "") ||
+        0
+      );
+    }
+
+    return 0;
   });
   const totalImports = getImportCount();
   const upcomingViewings = listings.filter((listing) =>
@@ -130,12 +172,17 @@ export default async function Home({ searchParams }: HomeProps) {
               <p className="eyebrow">Dashboard</p>
               <h2>Saved listings</h2>
             </div>
-            <Link
-              className="sort-button"
-              href={sortByDistance ? "/" : "/?sort=distance"}
-            >
-              {sortByDistance ? "Newest first" : "Sort by distance"}
-            </Link>
+            <div className="sort-controls" aria-label="Sort listings">
+              <Link className={!sort ? "active" : ""} href="/">
+                Newest
+              </Link>
+              <Link className={sort === "postcode" ? "active" : ""} href="/?sort=postcode">
+                Postcode
+              </Link>
+              <Link className={sort === "distance" ? "active" : ""} href="/?sort=distance">
+                Appleton distance
+              </Link>
+            </div>
           </div>
 
           {listings.length === 0 ? (
@@ -152,6 +199,8 @@ export default async function Home({ searchParams }: HomeProps) {
                 const nextViewing = listing.viewings.find(
                   (viewing) => viewing.startsAt >= new Date(),
                 );
+                const postcode = getListingPostcode(listing);
+                const appletonDistanceKm = estimateAppletonDistanceKm(listing);
 
                 return (
                   <article className="listing-card" key={listing.id}>
@@ -177,8 +226,9 @@ export default async function Home({ searchParams }: HomeProps) {
                       {listing.bedrooms !== null
                         ? ` · ${listing.bedrooms} bed`
                         : ""}
-                      {Number.isFinite(estimateDistanceKm(listing))
-                        ? ` · ~${estimateDistanceKm(listing).toFixed(1)} km`
+                      {postcode.district ? ` · ${postcode.full ?? postcode.district}` : ""}
+                      {Number.isFinite(appletonDistanceKm)
+                        ? ` · ${appletonDistanceKm.toFixed(1)} km from Appleton Tower`
                         : ""}
                     </p>
                     {listing.agentName ? (

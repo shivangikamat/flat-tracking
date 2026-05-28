@@ -70,24 +70,6 @@ button:hover {
   background: linear-gradient(180deg, #ff7fb4, var(--accent-strong));
 }
 
-.sort-button {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #ff70aa, var(--accent));
-  box-shadow: 0 5px 0 #b91e70;
-  color: #ffffff;
-  font-weight: 800;
-  padding: 0 16px;
-  text-decoration: none;
-}
-
-.sort-button:hover {
-  background: var(--accent-strong);
-}
-
 input,
 select,
 textarea {
@@ -247,6 +229,35 @@ label {
   padding: 0 4px;
 }
 
+.sort-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.sort-controls a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e983b6;
+  border-radius: 12px;
+  background: #fffafd;
+  color: var(--accent-strong);
+  font-weight: 800;
+  padding: 0 14px;
+  text-decoration: none;
+}
+
+.sort-controls a.active,
+.sort-controls a:hover {
+  border-color: transparent;
+  background: linear-gradient(180deg, #ff70aa, var(--accent));
+  box-shadow: 0 5px 0 #b91e70;
+  color: #ffffff;
+}
+
 .empty-state {
   padding: 38px;
 }
@@ -381,8 +392,17 @@ label {
   }
 
   .listing-topline,
-  .listing-topline form {
+  .listing-topline form,
+  .section-heading {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .sort-controls {
+    justify-content: stretch;
+  }
+
+  .sort-controls a {
+    flex: 1;
   }
 }
