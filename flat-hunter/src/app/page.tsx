@@ -87,6 +87,10 @@ function getPostcodeGroupSortValue(label: string) {
   return number ? Number.parseInt(number, 10) : Number.POSITIVE_INFINITY;
 }
 
+function getRentSortValue(listing: Listing) {
+  return listing.rentPcm ?? Number.POSITIVE_INFINITY;
+}
+
 function distanceBetweenKm(
   first: { lat: number; lon: number },
   second: { lat: number; lon: number },
@@ -139,6 +143,14 @@ export default async function Home({ searchParams }: HomeProps) {
         first.title?.localeCompare(second.title ?? "") ||
         0
       );
+    }
+
+    if (sort === "rent-asc") {
+      return getRentSortValue(first) - getRentSortValue(second);
+    }
+
+    if (sort === "rent-desc") {
+      return getRentSortValue(second) - getRentSortValue(first);
     }
 
     return 0;
@@ -199,6 +211,12 @@ export default async function Home({ searchParams }: HomeProps) {
               </Link>
               <Link className={sort === "distance" ? "active" : ""} href="/?sort=distance">
                 Appleton distance
+              </Link>
+              <Link className={sort === "rent-asc" ? "active" : ""} href="/?sort=rent-asc">
+                Rent low-high
+              </Link>
+              <Link className={sort === "rent-desc" ? "active" : ""} href="/?sort=rent-desc">
+                Rent high-low
               </Link>
             </div>
           </div>
