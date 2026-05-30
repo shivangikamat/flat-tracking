@@ -132,6 +132,7 @@ type HomeProps = {
 export default async function Home({ searchParams }: HomeProps) {
   const resolvedSearchParams = await searchParams;
   const sort = resolvedSearchParams?.sort;
+  const isRentSort = sort === "rent-asc" || sort === "rent-desc";
   const listings = getListings().toSorted((first, second) => {
     if (sort === "distance") {
       return estimateAppletonDistanceKm(first) - estimateAppletonDistanceKm(second);
@@ -167,6 +168,9 @@ export default async function Home({ searchParams }: HomeProps) {
         getPostcodeGroupSortValue(firstLabel) - getPostcodeGroupSortValue(secondLabel) ||
         firstLabel.localeCompare(secondLabel),
     );
+  const listingGroups: Array<[string, typeof listings]> = isRentSort
+    ? [["All listings by rent", listings]]
+    : postcodeGroups;
 
   return (
     <main className="app-shell">
@@ -231,7 +235,7 @@ export default async function Home({ searchParams }: HomeProps) {
             </div>
           ) : (
             <div className="postcode-groups">
-              {postcodeGroups.map(([label, groupListings]) => (
+              {listingGroups.map(([label, groupListings]) => (
                 <section className="postcode-section" key={label}>
                   <div className="postcode-heading">
                     <h3>{label}</h3>
