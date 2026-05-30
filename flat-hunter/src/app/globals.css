@@ -511,9 +511,11 @@ label {
   justify-content: space-between;
   gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .listing-topline span {
+  flex: 0 1 auto;
   color: #4d8f63;
   font-size: 0.8rem;
   font-weight: 800;
@@ -524,10 +526,12 @@ label {
 
 .listing-topline form {
   display: grid;
-  grid-template-columns: minmax(160px, 1fr) auto;
+  flex: 1 1 240px;
+  grid-template-columns: minmax(0, 1fr) minmax(88px, auto);
   gap: 8px;
   align-items: center;
-  min-width: min(100%, 260px);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .listing-topline select {
@@ -537,6 +541,11 @@ label {
 .listing-topline button,
 .mini-form button {
   min-height: 40px;
+}
+
+.listing-topline button {
+  min-width: 88px;
+  padding: 0 14px;
 }
 
 .listing-card h3 {
