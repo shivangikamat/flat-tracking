@@ -322,6 +322,17 @@ label {
   box-shadow: var(--shadow);
   padding: 24px;
   overflow: hidden;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.listing-card:hover,
+.listing-card:focus-within {
+  border-color: rgba(157, 110, 226, 0.72);
+  box-shadow: 0 26px 58px rgba(91, 68, 133, 0.18);
+  transform: translateY(-4px);
 }
 
 .viewing-list {
@@ -445,6 +456,14 @@ label {
   color: var(--accent-strong);
   padding: 8px;
   text-decoration: none;
+  transition:
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.calendar-event:hover {
+  box-shadow: 0 10px 18px rgba(91, 68, 133, 0.14);
+  transform: translateY(-2px);
 }
 
 .calendar-event span {
@@ -466,6 +485,17 @@ label {
   background: var(--panel);
   box-shadow: var(--shadow);
   padding: 20px;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.viewing-card:hover,
+.viewing-card:focus-within {
+  border-color: rgba(157, 110, 226, 0.72);
+  box-shadow: 0 24px 52px rgba(91, 68, 133, 0.16);
+  transform: translateY(-3px);
 }
 
 .viewing-card h2 {
@@ -598,5 +628,21 @@ label {
   .calendar-nav a {
     flex: 1;
     justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .listing-card,
+  .calendar-event,
+  .viewing-card {
+    transition: none;
+  }
+
+  .listing-card:hover,
+  .listing-card:focus-within,
+  .calendar-event:hover,
+  .viewing-card:hover,
+  .viewing-card:focus-within {
+    transform: none;
   }
 }
