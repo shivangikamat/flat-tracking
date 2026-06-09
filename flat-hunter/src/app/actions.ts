@@ -46,7 +46,7 @@ export async function addListing(formData: FormData) {
     notes: optionalString(formData.get("notes")),
   });
 
-  revalidatePath("/");
+  revalidatePath("/listings");
 }
 
 export async function updateListingStatus(formData: FormData) {
@@ -59,7 +59,7 @@ export async function updateListingStatus(formData: FormData) {
 
   setListingStatus(id, status as never);
 
-  revalidatePath("/");
+  revalidatePath("/listings");
 }
 
 export async function updateListingNotes(formData: FormData) {
@@ -71,7 +71,7 @@ export async function updateListingNotes(formData: FormData) {
 
   setListingNotes(id, optionalString(formData.get("notes")));
 
-  revalidatePath("/");
+  revalidatePath("/listings");
 }
 
 export async function addViewing(formData: FormData) {
@@ -91,5 +91,6 @@ export async function addViewing(formData: FormData) {
     notes: optionalString(formData.get("notes")),
   });
 
-  revalidatePath("/");
+  revalidatePath("/listings");
+  revalidatePath("/viewings");
 }
