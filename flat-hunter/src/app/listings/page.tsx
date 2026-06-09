@@ -2,7 +2,7 @@ import {
   addViewing,
   updateListingNotes,
   updateListingStatus,
-} from "./actions";
+} from "../actions";
 import { getImportCount, getListings, ListingStatus } from "@/lib/db";
 import Link from "next/link";
 
@@ -179,6 +179,8 @@ export default async function Home({ searchParams }: HomeProps) {
           <p className="eyebrow">Edinburgh rental tracker</p>
           <h1>One place for flats, enquiries, and viewings.</h1>
           <nav className="page-nav" aria-label="Main navigation">
+            <Link href="/">Front door</Link>
+            <Link href="/options">Options</Link>
             <Link href="/listings">Listings</Link>
             <Link href="/viewings">Scheduled viewings</Link>
           </nav>

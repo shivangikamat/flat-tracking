@@ -105,6 +105,8 @@ export default async function ViewingsPage({ searchParams }: ViewingsPageProps) 
           <p className="eyebrow">Scheduled viewings</p>
           <h1>Your viewings, laid out by date.</h1>
           <nav className="page-nav" aria-label="Main navigation">
+            <Link href="/">Front door</Link>
+            <Link href="/options">Options</Link>
             <Link href="/listings">Listings</Link>
             <Link href="/viewings">Scheduled viewings</Link>
           </nav>

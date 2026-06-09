@@ -95,6 +95,217 @@ label {
   font-weight: 700;
 }
 
+.front-door-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 34px 24px;
+}
+
+.house-entry {
+  width: min(1180px, 100%);
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(420px, 1.15fr);
+  gap: 28px;
+  align-items: center;
+  border: 1px solid rgba(215, 199, 238, 0.95);
+  border-radius: 36px;
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.96), rgba(246, 239, 255, 0.88)),
+    var(--panel);
+  box-shadow: var(--shadow);
+  padding: 34px;
+}
+
+.entry-copy {
+  display: grid;
+  gap: 14px;
+}
+
+.entry-copy h1 {
+  max-width: 560px;
+  font-size: clamp(2.4rem, 5.2vw, 5.4rem);
+  line-height: 0.98;
+}
+
+.entry-copy p:not(.eyebrow) {
+  max-width: 420px;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.5;
+}
+
+.house-stage {
+  position: relative;
+  min-height: 520px;
+  overflow: hidden;
+  border: 1px solid rgba(215, 199, 238, 0.9);
+  border-radius: 32px;
+  background:
+    linear-gradient(180deg, rgba(232, 249, 236, 0.72), rgba(246, 239, 255, 0.96)),
+    #ffffff;
+}
+
+.house-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(132, 227, 163, 0.36), transparent 120px),
+    radial-gradient(circle at 78% 10%, rgba(181, 138, 240, 0.28), transparent 150px);
+}
+
+.house {
+  position: absolute;
+  left: 50%;
+  bottom: 72px;
+  width: min(360px, 72%);
+  height: 310px;
+  transform: translateX(-50%);
+}
+
+.chimney {
+  position: absolute;
+  right: 72px;
+  top: 8px;
+  width: 44px;
+  height: 86px;
+  border-radius: 14px 14px 4px 4px;
+  background: linear-gradient(180deg, #8f65d5, #7450bd);
+  box-shadow: 0 14px 24px rgba(91, 68, 133, 0.18);
+}
+
+.roof {
+  position: absolute;
+  inset: 34px 0 auto;
+  height: 150px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: linear-gradient(135deg, #b98df1, #7f55c8);
+  filter: drop-shadow(0 18px 18px rgba(91, 68, 133, 0.18));
+}
+
+.house-body {
+  position: absolute;
+  inset: 142px 26px 0;
+  border: 1px solid rgba(215, 199, 238, 0.95);
+  border-radius: 30px 30px 24px 24px;
+  background: linear-gradient(180deg, #ffffff, #fbf8ff);
+  box-shadow: 0 24px 52px rgba(91, 68, 133, 0.18);
+}
+
+.window {
+  position: absolute;
+  top: 48px;
+  width: 68px;
+  height: 66px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  border: 1px solid rgba(132, 227, 163, 0.55);
+  border-radius: 20px;
+  background: #e8f9ec;
+  padding: 10px;
+}
+
+.window-left {
+  left: 30px;
+}
+
+.window-right {
+  right: 30px;
+}
+
+.window span {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.house-door {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 96px;
+  height: 142px;
+  display: grid;
+  place-items: end center;
+  border: 1px solid rgba(127, 85, 200, 0.42);
+  border-radius: 42px 42px 16px 16px;
+  background: linear-gradient(180deg, #a879e8, #7f55c8);
+  box-shadow: 0 18px 34px rgba(91, 68, 133, 0.24);
+  color: #ffffff;
+  padding: 0 10px 20px;
+  text-decoration: none;
+  transform: translateX(-50%);
+  transform-origin: left center;
+  transition:
+    box-shadow 180ms ease,
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.house-door:hover,
+.house-door:focus-visible {
+  box-shadow: 0 24px 44px rgba(91, 68, 133, 0.28);
+  filter: saturate(1.08);
+  transform: translateX(-50%) perspective(420px) rotateY(-9deg);
+}
+
+.house-door strong {
+  font-size: 0.86rem;
+}
+
+.door-knob {
+  position: absolute;
+  right: 16px;
+  top: 74px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #e8f9ec;
+  box-shadow: 0 0 0 4px rgba(232, 249, 236, 0.25);
+}
+
+.garden-path {
+  position: absolute;
+  left: 50%;
+  bottom: -96px;
+  width: 220px;
+  height: 190px;
+  border-radius: 50% 50% 0 0;
+  background: linear-gradient(180deg, rgba(215, 199, 238, 0.82), rgba(255, 255, 255, 0));
+  transform: translateX(-50%);
+}
+
+.entry-stats {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.entry-stats div,
+.option-card {
+  border: 1px solid rgba(215, 199, 238, 0.95);
+  background: linear-gradient(180deg, #ffffff, #fbf8ff);
+  box-shadow: 0 14px 28px rgba(91, 68, 133, 0.08);
+}
+
+.entry-stats div {
+  border-radius: 24px;
+  padding: 18px;
+}
+
+.entry-stats span {
+  display: block;
+  color: var(--accent-strong);
+  font-size: 2.05rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.entry-stats p {
+  color: var(--muted);
+}
+
 .app-shell {
   width: min(1680px, calc(100vw - 48px));
   margin: 0 auto;
@@ -197,6 +408,77 @@ label {
 
 .workspace {
   display: block;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.option-card {
+  min-height: 250px;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  border-radius: 30px;
+  padding: 24px;
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.option-card:hover,
+.option-card:focus-visible {
+  border-color: rgba(157, 110, 226, 0.72);
+  box-shadow: 0 24px 52px rgba(91, 68, 133, 0.16);
+  transform: translateY(-4px);
+}
+
+.option-card span {
+  width: fit-content;
+  border-radius: 999px;
+  background: var(--mint-soft);
+  color: #4d8f63;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 8px 10px;
+}
+
+.option-card h2 {
+  font-size: 1.45rem;
+  line-height: 1.08;
+}
+
+.option-card p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.option-card code {
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--accent-strong);
+  font-size: 0.9em;
+  padding: 2px 5px;
+}
+
+.primary-option {
+  background:
+    linear-gradient(150deg, rgba(168, 121, 232, 0.95), rgba(127, 85, 200, 0.94)),
+    var(--accent);
+  color: #ffffff;
+}
+
+.primary-option span {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.primary-option p {
+  color: rgba(255, 255, 255, 0.86);
 }
 
 .empty-state {
@@ -576,6 +858,18 @@ label {
 }
 
 @media (max-width: 920px) {
+  .house-entry {
+    grid-template-columns: 1fr;
+  }
+
+  .house-stage {
+    min-height: 420px;
+  }
+
+  .option-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .hero {
     grid-template-columns: 1fr;
   }
@@ -604,6 +898,24 @@ label {
 }
 
 @media (max-width: 620px) {
+  .front-door-page {
+    padding: 16px;
+  }
+
+  .house-entry {
+    border-radius: 28px;
+    padding: 22px;
+  }
+
+  .house-stage {
+    min-height: 360px;
+  }
+
+  .entry-stats,
+  .option-grid {
+    grid-template-columns: 1fr;
+  }
+
   .app-shell {
     width: min(100vw - 22px, 1680px);
     padding-top: 20px;
@@ -641,12 +953,18 @@ label {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .house-door,
+  .option-card,
   .listing-card,
   .calendar-event,
   .viewing-card {
     transition: none;
   }
 
+  .house-door:hover,
+  .house-door:focus-visible,
+  .option-card:hover,
+  .option-card:focus-visible,
   .listing-card:hover,
   .listing-card:focus-within,
   .calendar-event:hover,
